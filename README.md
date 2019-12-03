@@ -33,4 +33,4 @@ SHV181 is developed by [hmayma](https://github.com/ahmedyassine-hammami) and [gh
 
 ## License
 GNU General Public License v3.0 or later
-See [LICENSE](LICENSE) to see the full text
+See [LICENSE](LICENSE.md) to see the full text
