@@ -4,11 +4,11 @@
 ### Example
 
 ## Usage
-***
+
 
 
 ## Building and Installing
-***
+
 
 ### Install from git repository
 
@@ -26,14 +26,11 @@ you will need :
     g++ word.o stream.o file.o database.o indexing.o main.o
 
 ## Documentation
-***
+
 
 ## Contributing
-***
 SHV181 is developed by [hmayma](https://github.com/ahmedyassine-hammami) and [ghaithsassi](https://github.com/ghaithsassi) as part of class project
 
 ## License
-***
 GNU General Public License v3.0 or later
-
 See [LICENSE](LICENSE) to see the full text
