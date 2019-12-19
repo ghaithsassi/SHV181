@@ -19,7 +19,11 @@ you will need :
     git colne https://github.com/ghaithsassi/SHV181.git
     cd SHV181
 ### Building classes
-    g++ -c word.cpp -c stream.cpp -c file.cpp -c database.cpp - c indexing.cpp
+    g++ -c word.cpp 
+    g++ -c stream.cpp 
+    g++ -c file.cpp 
+    g++ -c database.cpp 
+    g++ - c indexing.cpp
 ### Building main 
     g++ -c main.cpp
 ### Building exe file

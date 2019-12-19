@@ -1,6 +1,6 @@
 /*
 SHV181
-Copyright (C) 2019  ghaith sassi
+Copyright (C) 2019  ghaith sassi & ahmed yassine hammami 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,10 @@ class word{
     word(string);
     string getWord();
     void increaseOccurence();
+    void pipeline();
+    int getOccurence();
     friend ostream & operator<<(ostream &,word &);
+    friend istream & operator>>(istream&, word &);
 };
 
 #endif

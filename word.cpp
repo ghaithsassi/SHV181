@@ -23,6 +23,8 @@ word::word(){
 
 word::word(string s){
         name = s;
+        /* transform data to lower case */
+        transform(name.begin(), name.end(), name.begin(),[](unsigned char c){ return std::tolower(c); });
 }
 string word::getWord(){
         return name;
@@ -30,6 +32,16 @@ string word::getWord(){
 void word::increaseOccurence(){
         occurence++;
     }
+int word::getOccurence(){
+        return this->occurence;
+}
+void word::pipeline(){
+        if((int)name.size()<2)name = "";
+}
+
 ostream & operator<<(ostream &out,word &w){
-            out<<w.name<<" "<<w.occurence;
+        out<<w.name<<'\t'<<w.occurence;
+}
+istream & operator>>(istream &in, word &w){
+        in>>w.name>>w.occurence;
 }

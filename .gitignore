@@ -2,5 +2,5 @@
 .vscode/*
 *.o
 *.exe
-dataset
 dataset/*
+index/*

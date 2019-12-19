@@ -1,6 +1,6 @@
 /*
 SHV181
-Copyright (C) 2019  ghaith sassi
+Copyright (C) 2019  ghaith sassi & ahmed yassine hammami 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,9 +53,10 @@ class text:public file<ifstream>{
     void open(){
         ifile.open(this->fileName);
         this->myfile = new input<ifstream>(ifile);
+        myfile->addDelimiter();
     }
     bool getWord(string &s){
-             if((*(this->myfile)) >>s)return true;
+             if( *(this->myfile) >>s )return true;
              else return false;
     }
 
