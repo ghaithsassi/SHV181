@@ -30,7 +30,7 @@ class my_ctype : public std::ctype<char>
         : std::ctype<char>(&my_table[0], false, refs)
     {
         std::copy_n(classic_table(), table_size, my_table);
-        list<char> nonAlphaNum({'-', '/', '+', '(', ')', '%', '.', ',', '$', '<', '>','[',']','*','\\','"','\'',':','!','?','#',';'});
+        list<char> nonAlphaNum({'-', '/', '+', '(', ')', '%', '.', ',', '$', '<', '>','[',']','*','\\','"','\'',':','!','?','#',';','~'});
         for(char c:nonAlphaNum){
             my_table[c] = (mask)space;
         }

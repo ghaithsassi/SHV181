@@ -45,7 +45,6 @@ class notVerySmartRankingAlgorithm:public rankingAlgorithm{
                 }                                       
             }
         }
-        
         delete &searchResaultFiles;
 
         /* sort files here */

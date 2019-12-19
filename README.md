@@ -23,12 +23,12 @@ you will need :
     g++ -c stream.cpp 
     g++ -c file.cpp 
     g++ -c database.cpp 
+    g++ -c ranking.cpp
     g++ - c indexing.cpp
 ### Building main 
     g++ -c main.cpp
 ### Building exe file
-    g++ word.o stream.o file.o database.o indexing.o main.o
-
+    g++ word.o stream.o file.o database.o ranking.o indexing.o main.o -o f
 ## Documentation
 
 

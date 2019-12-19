@@ -38,10 +38,13 @@ int word::getOccurence(){
 void word::pipeline(){
         if((int)name.size()<2)name = "";
 }
+void word::setWord(string s){
+        name = s;
+}
 
 ostream & operator<<(ostream &out,word &w){
-        out<<w.name<<'\t'<<w.occurence;
+        out<<'\t'<<w.occurence;
 }
 istream & operator>>(istream &in, word &w){
-        in>>w.name>>w.occurence;
+        in>>w.occurence;
 }

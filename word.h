@@ -28,10 +28,12 @@ class word{
     public:
     word();
     word(string);
+    void setWord(string);
     string getWord();
     void increaseOccurence();
     void pipeline();
     int getOccurence();
+    
     friend ostream & operator<<(ostream &,word &);
     friend istream & operator>>(istream&, word &);
 };

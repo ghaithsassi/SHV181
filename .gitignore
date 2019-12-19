@@ -4,3 +4,6 @@
 *.exe
 dataset/*
 index/*
+
+!index/.gitkeep
+!dataset/.gitkeep 

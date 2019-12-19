@@ -30,15 +30,11 @@ int main(){
 
     /* indexing */
     
-    searchIndex.indexPath("./dataset");
-    (searchIndex.myindex)->save();
+    //searchIndex.indexPath("./dataset");
+    //(searchIndex.myindex)->save();
+    (searchIndex.myindex)->load();
     
 
-    
-    //(searchIndex.myindex)->load();
-    
-
-    
     
     cout<<"-------search----------"<<endl;
     string s;

@@ -54,13 +54,14 @@ class database{
     virtual vector<pair<int,word*>>* searchWord(string &){}
     virtual void save(){}
     virtual void load(){}
+    
 };
 
 
 
 class datastracure:public database{
     public:
-    unordered_map <string,unordered_map<int,word*>*> index;
+    map <string,map<int,word*>*> index;
     void push(string &w,string &f){
             int fileId = this->getfileId(f);
             if(fileId ==-1 ){
@@ -76,7 +77,7 @@ class datastracure:public database{
             }; 
             auto it = index.find(s);
             if( it != index.end()){
-                unordered_map<int,word*> &filesContainsWord = *(index[s]);
+                map<int,word*> &filesContainsWord = *(index[s]);
                 auto fl = filesContainsWord.find(fileId);
                 if(fl != filesContainsWord.end()){
                     filesContainsWord[fileId]->increaseOccurence();
@@ -86,7 +87,7 @@ class datastracure:public database{
                 }
             }else{
                 myword->increaseOccurence();
-                unordered_map<int,word*> *filesContainsWord = new unordered_map<int,word*>({{fileId,myword}});
+                map<int,word*> *filesContainsWord = new map<int,word*>({{fileId,myword}});
                 index[s] = filesContainsWord;
             }
 
@@ -104,40 +105,19 @@ class datastracure:public database{
     void save(){
         ofstream oIndFile,oFilesMapedToWordFile,oWorldlist,ofileIdFile;
         oIndFile.open("index/mainIndex");
-        oFilesMapedToWordFile.open("index/filesMapedToWord");
-        oWorldlist.open("index/worldlist");
         ofileIdFile.open("index/fileId");
 
         output<ofstream> mainIndex(oIndFile);
-        output<ofstream> filesMapedToWord(oFilesMapedToWordFile);
-        output<ofstream> wordList(oWorldlist);
         output<ofstream> fileIdFile(ofileIdFile);
-
-        /* keep track of pointer Id*/
-        unordered_map<unordered_map<int,word*>*,int> subMapId;
-        unordered_map<word*,int> wordId;
 
         /* save data to files */ 
         for(auto it = index.begin();it!=index.end();it++){
-            /* save main indexfile key : string ; value : map id */ 
-            auto findMap = subMapId.find(it->second);
-            if(findMap == subMapId.end()){
-                int subMapIdSize = (int)subMapId.size();
-                subMapId[it->second]= subMapIdSize;
-            }
-            mainIndex<<it->first<<'\t'<<subMapId[it->second]<<endl;
-
-            /* key : file id ; value : world id */
+            int n =(int) it->second->size();
+            mainIndex<<it->first<<'\t'<<n<<'\t';
             for(auto jt = it->second->begin();jt!=it->second->end();jt++){
-                auto findWord = wordId.find(jt->second);
-                if(findWord == wordId.end()){
-                    int wordIdSize = (int)wordId.size();
-                    wordId[jt->second] = wordIdSize;
-                }
-                filesMapedToWord<<subMapId[it->second]<<'\t'<< jt->first <<'\t'<<wordId[jt->second]<<endl;
-                wordList<<wordId[jt->second]<<'\t'<<*(jt->second)<<endl;
-
+                mainIndex<<jt->first<<'\t'<<*(jt->second)<<'\t';
             }
+            mainIndex<<""<<endl;
         }
         /* save file id */
         for(auto it = fileIdList.begin();it!=fileIdList.end();it++){
@@ -145,70 +125,41 @@ class datastracure:public database{
         } 
 
         fileIdFile.close();
-        wordList.close();
-        filesMapedToWord.close();
         mainIndex.close();
     }
     void load(){
-        ifstream iIndFile,iFilesMapedToWordFile,iWorldlist,ifileIdFile;
+        ifstream iIndFile,ifileIdFile;
         
         iIndFile.open("index/mainIndex");
-        iFilesMapedToWordFile.open("index/filesMapedToWord");
-        iWorldlist.open("index/worldlist");
         ifileIdFile.open("index/fileId");
 
         input<ifstream> mainIndex(iIndFile);
         mainIndex.addTabDelimiter();
-        input<ifstream> filesMapedToWord(iFilesMapedToWordFile);
-        filesMapedToWord.addTabDelimiter();
-        input<ifstream> wordList(iWorldlist);
-        wordList.addTabDelimiter();
         input<ifstream> fileIdFile(ifileIdFile);
         fileIdFile.addTabDelimiter();
 
-        /* keep track of pointer Id*/
-        unordered_map<int,unordered_map<int,word*>*> subMapId;
-        unordered_map<int,word*> wordId;
-        
-        int word_Id;
-        word *w = new word;
-        while( (wordList>>word_Id>>(*w) ) ){
-            wordId[word_Id] = w;
-            w = new word;
-        }
-
-        unordered_map<int,word*> * subMap;
-        int file_Id,subMap_Id;
-        while(filesMapedToWord>>subMap_Id>>file_Id>>word_Id){
-            auto it  = subMapId.find(subMap_Id);
-            if(it != subMapId.end()){}
-            else{
-                subMap = new unordered_map<int,word*>;
-                subMapId[subMap_Id]=subMap;
-            }
-            
-            subMap = subMapId[subMap_Id];
-            (*subMap)[file_Id] = wordId[word_Id];
-        }
         string s;
-        while(mainIndex>>s>>subMap_Id){
-            auto it  = index.find(s);
-            if(it != index.end()){}
-            else{
-                index[s] = subMapId[subMap_Id];
-            }
-        }
+        int file_Id,n;
+        
         while(fileIdFile>>s>>file_Id){
             fileIdList[s]=file_Id;
             fileIdListInverse[file_Id] = s;
         }
-        
-        fileIdFile.close();
-        wordList.close();
-        filesMapedToWord.close();
-        mainIndex.close();
 
-        
+        while(mainIndex>>s){
+            mainIndex>>n;
+            map<int,word*>* subMap = new map<int,word*>;
+            index[s] = subMap;
+            for(int i=0;i<n;i++){
+                word *myword = new word;
+                mainIndex>>file_Id>>*myword;
+                myword->setWord(s);
+                (*subMap)[file_Id]=myword; 
+            }
+        }
+     
+        fileIdFile.close();
+        mainIndex.close();        
     }
     
 };

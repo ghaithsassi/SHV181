@@ -65,7 +65,8 @@ class indexing{
        }
         delete result;
 
-       /*
+       
+        /*
         for(auto it  = searchResault->begin();it!=searchResault->end();it++){
             int n = (int)(it->second)->size();
             for(auto i = it->second->begin();i!=it->second->end();i++){
@@ -73,6 +74,7 @@ class indexing{
             }
         }
         */
+        
        delete searchResault;
 
     }
