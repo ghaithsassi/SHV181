@@ -4,6 +4,8 @@
 *.exe
 dataset/*
 index/*
+debug.txt
+test.cpp
 
 !index/.gitkeep
 !dataset/.gitkeep 
