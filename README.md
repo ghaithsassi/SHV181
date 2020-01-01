@@ -1,6 +1,14 @@
 # SHV181 
 ## A File search engine build in C++
 ### Overview
+    ------------------------------------------------------
+          Welcome in SVH181 search engine
+
+
+    [1] :search     [2] :index      [3] :index a file       [4] :index a path               [0] :exit
+    [5] :load index [6] :save index
+
+    >>
 ### Example
 
 ## Usage
@@ -18,16 +26,16 @@ you will need :
 #### using terminal 
     git colne https://github.com/ghaithsassi/SHV181.git
     cd SHV181
-### Building classes
+#### Building classes
     g++ -c word.cpp 
     g++ -c stream.cpp 
     g++ -c file.cpp 
     g++ -c database.cpp 
     g++ -c ranking.cpp
     g++ - c indexing.cpp
-### Building main 
+#### Building main 
     g++ -c main.cpp
-### Building exe file
+#### Building exe file
     g++ word.o stream.o file.o database.o ranking.o indexing.o main.o -o f
 ## Documentation
 
