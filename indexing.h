@@ -27,9 +27,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 class indexing{
+    
+    database *myindex;
+    rankingAlgorithm *myRanker ;
     public:
-    database *myindex = new datastracure;
-    rankingAlgorithm *myRanker = new notVerySmartRankingAlgorithm; 
+    /* constructors  */ 
+    indexing(){
+        myindex = new mapBasedDataStructure;
+        myRanker = new aLitleBitSmarterAlgorithm;
+    } 
+    indexing(database *db){
+        myindex = db;
+        myRanker = new notVerySmartRankingAlgorithm;
+    }
+    indexing(rankingAlgorithm *rA){
+        myindex = new mapBasedDataStructure;
+        myRanker = rA;
+    }
+    indexing(database *db,rankingAlgorithm *rA){
+        myindex = db;
+        myRanker = rA;
+    }
+    indexing(rankingAlgorithm *rA,database *db){
+        myindex = db;
+        myRanker =rA;
+    }
+    /* end of constructors */
+
     void indexFile(text &fileToBeIndexed){
         fileToBeIndexed.open();
         string w;
@@ -92,7 +116,7 @@ class indexing{
             string file_path;
             file_path=path+"/"+dp->d_name;
             if(extension=="txt") {
-                cout<<"File : "<<dp->d_name<<" is indexed"<<endl;
+                //cout<<"File : "<<dp->d_name<<" is indexed"<<endl;
                 text txt(file_path);
                 indexFile(txt);
             }

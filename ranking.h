@@ -25,7 +25,7 @@ using namespace std;
 
 class rankingAlgorithm{
     public:
-    virtual vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){}
+    virtual vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault)=0;
 };
 
 class notVerySmartRankingAlgorithm:public rankingAlgorithm{
@@ -45,8 +45,6 @@ class notVerySmartRankingAlgorithm:public rankingAlgorithm{
                 }                                       
             }
         }
-        delete &searchResaultFiles;
-
         /* sort files here */
 
         // but this is stupid ranking algorithom we do nothing here 
@@ -56,5 +54,85 @@ class notVerySmartRankingAlgorithm:public rankingAlgorithm{
 
     }
 };
+class aLitleBitSmarterAlgorithm:public rankingAlgorithm{
+    public:
+        vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
+        // map key : file id value : occurence     
+        map<int,int> searchResaultFiles;
+        string words;
+        vector<pair<int,int>> vecIntermediate;
+        vector<int> *vec = new vector<int>;
+
+        // iterate through the words in the search sentence
+        for(auto it = searchResault->begin();it != searchResault->end();it++){
+            //iterate through the files
+            for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+                auto it2 = searchResaultFiles.find(jt->first);
+                if( it2==searchResaultFiles.end()) {
+                                searchResaultFiles[jt->first]=jt->second->getOccurence();
+                                //vec->push_back(jt->first);
+                }else{
+                                searchResaultFiles[jt->first]+=jt->second->getOccurence();
+                }                                       
+            }
+        }
+        /* sort files here */
+        // copy the result a vector
+        for(auto it= searchResaultFiles.begin();it!=searchResaultFiles.end();it++){
+            // push the pair < occurence   , file > in the vector
+            vecIntermediate.push_back(make_pair(it->second,it->first));
+        }
+        // sort according to occurence
+        sort(vecIntermediate.begin(),vecIntermediate.end());
+        int n = (int)vecIntermediate.size();
+        for(int i = n-1;i>=0;i--){
+            vec->push_back(vecIntermediate[i].second);
+        }
+        /* return result */
+        return vec;
+
+    }
+};
+
+class smarterAlgorithm:public rankingAlgorithm{
+    public:
+        vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
+        // map key : file id value : occurence     
+        map<int,int> searchResaultFiles;
+        string words;
+        vector<pair<int,int>> vecIntermediate;
+        vector<int> *vec = new vector<int>;
+
+        // iterate through the words in the search sentence
+        for(auto it = searchResault->begin();it != searchResault->end();it++){
+            //iterate through the files
+            for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+                auto it2 = searchResaultFiles.find(jt->first);
+                if( it2==searchResaultFiles.end()) {
+                                searchResaultFiles[jt->first]=jt->second->getOccurence();
+                                //vec->push_back(jt->first);
+                }else{
+                                searchResaultFiles[jt->first]+=jt->second->getOccurence();
+                }                                       
+            }
+        }
+        /* sort files here */
+        // copy the result a vector
+        for(auto it= searchResaultFiles.begin();it!=searchResaultFiles.end();it++){
+            // push the pair < occurence   , file > in the vector
+            vecIntermediate.push_back(make_pair(it->second,it->first));
+        }
+        // sort according to occurence
+        sort(vecIntermediate.begin(),vecIntermediate.end());
+        int n = (int)vecIntermediate.size();
+        for(int i = n-1;i>=max(0,n-5);i--){
+            vec->push_back(vecIntermediate[i].second);
+        }
+        /* return result */
+        return vec;
+
+    }
+};
+
 
 #endif

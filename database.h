@@ -59,7 +59,7 @@ class database{
 
 
 
-class datastracure:public database{
+class mapBasedDataStructure:public database{
     public:
     map <string,map<int,word*>*> index;
     void push(string &w,string &f){

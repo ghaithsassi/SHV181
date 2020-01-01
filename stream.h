@@ -52,8 +52,9 @@ class tab_delimiter : public std::ctype<char>
 template <class T>
 class stream : public T
 {
-    public:
+    protected:
     T *myStream;
+    public:
     stream(T &strm)
     {
         myStream = &strm;
@@ -82,6 +83,13 @@ class input : public stream<T>
     {
         *(st.myStream) >> var;
         return *(st.myStream);
+    }
+    friend void getline(input<T> &st,string &s){
+        st.flush();
+        getline(*(st.getStream()),s);
+    }
+    void flush(){
+        this->myStream->ignore();
     }
     T *getStream()
     {

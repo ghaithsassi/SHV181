@@ -16,31 +16,130 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include<bits/stdc++.h>
+#include <time.h>
 #include "file.h"
 #include "indexing.h"
+#include "stream.h"
+#include "ranking.h"
+
 using namespace std;
 
+int n;// this variable is not used
+
+//#define inputStream cin
+//#define outputStream cout
+
+/* global varibales */
+
+//notVerySmartRankingAlgorithm *algorithm = new notVerySmartRankingAlgorithm;
+//aLitleBitSmarterAlgorithm *algorithm = new aLitleBitSmarterAlgorithm;
+smarterAlgorithm * algorithm = new smarterAlgorithm;
+
+indexing searchIndex(algorithm);
+
+input<istream> inputStream(cin);
+output<ostream> outputStream(cout);
+
+void duree(time_t,time_t);
+void search();
+void index();
+void indexafile();
+void indexapath();
 
 int main(){
-    int n = 10;
-    int k=15;
-    
-    text test_text("dataset/test.txt");
-    indexing searchIndex;
+    text test_text("dataset/test.txt");  // used for debug
+    int q;
 
-    /* indexing */
-    
-    //searchIndex.indexPath("./dataset");
-    //(searchIndex.myindex)->save();
-    (searchIndex.myindex)->load();
-    
+    outputStream<<"------------------------------------------------------"<<endl;
+    outputStream<<"      Welcome in SVH181 search engine                 "<<endl;
+    start:
+    outputStream<<""<<endl<<endl;
+    outputStream<<"[1] :search\t[2] :index\t[3] :index a file\t[4] :index a path\t\t[0] :exit"<<endl;
+    outputStream<<"[5] :load index\t[6] :save index"<<endl<<endl;
+    outputStream<<">>";
+    inputStream>>q;
+    switch (q)
+    {
+    case 0:
+      return 0;
+    case 1:
+      search();
+      goto start;
+      break; // just to remove compiler warnning 
+    case 2:
+      index();
+      goto start;
+      break;
+    case 3:
+      indexafile();
+      goto start; 
+      break; 
+    case 4 : 
+        indexapath();
+        goto start;
+        break;
+    case 5:
+        outputStream<<"loading index %%%?"<<endl;
+        searchIndex.loadIndex();
+        goto start;
+        break;
+    case 6:
+        outputStream<<"saving index %%%?"<<endl;
+        searchIndex.saveIndex();
+        goto start;
+        break;
 
-    
-    cout<<"-------search----------"<<endl;
-    string s;
-    getline(cin,s);
-    searchIndex.search(s);
+    default:
+      goto start;
+      break;
+    }
 
-    
     return 0;
+}
+void duree(time_t _begin, time_t _end) 
+{
+  double temp; 
+  double hours=0, min=0, sec=0; 
+  double dureeCalc = difftime(_end, _begin);
+  temp = modf(dureeCalc/3600., &hours); 
+  temp = modf(temp*60., &min); 
+  temp = modf(temp*60., &sec); 
+  cout<<hours<<" h "<<min<<" min "<<sec<<" sec"<<endl; 
+}
+
+void search(){
+        string s;
+        outputStream<<"-------search----------"<<endl;
+        getline(inputStream,s);
+        cerr<<"aloha  "<<endl;
+        cerr<<s<<endl;
+        time_t begin1=time(NULL);
+        searchIndex.search(s);
+        outputStream<<"--Search time : ";
+        time_t end1=time(NULL); 
+        duree(begin1,end1);
+}
+void index(){
+      outputStream<<"indexing dataset %%%%"<<endl;
+      time_t begin=time(NULL);
+      searchIndex.indexPath("./dataset");
+      cout<<"--Indexation time : ";
+      time_t end=time(NULL);
+      duree(begin,end);
+}
+void indexafile(){
+      string s="";
+      outputStream<<"-------index a file----------"<<endl;
+      outputStream<<"enter file path/name.txt: ";
+      inputStream>>s;
+      text myfile(s);
+      searchIndex.indexFile(myfile);
+
+}
+void indexapath(){
+      string s="";
+      outputStream<<"-------index a path----------"<<endl;
+      outputStream<<"enter path: ";
+      inputStream>>s;
+      searchIndex.indexPath(s);
 }
