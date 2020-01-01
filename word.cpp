@@ -17,6 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "word.h"
 
+set<string> stopwordsList({
+        "ourselves", "hers", "between", "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here", "than"
+});
+
 word::word(){
         name = "";
 }
@@ -35,8 +39,16 @@ void word::increaseOccurence(){
 int word::getOccurence(){
         return this->occurence;
 }
+bool word::isStopword(){
+        auto it =  stopwordsList.find(name);
+        if(it != stopwordsList.end())return true;
+        else return false;
+}
 void word::pipeline(){
+        /* remove any word under 2 charachers */ 
         if((int)name.size()<2)name = "";
+        /* comment to deeactivate stop word removal */  
+        if(this->isStopword())name = "";
 }
 void word::setWord(string s){
         name = s;

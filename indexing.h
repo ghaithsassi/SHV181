@@ -83,6 +83,7 @@ class indexing{
 
         /* result */
         cout<<"-----result------"<<endl;
+        cout<<"search for "<<s<<endl<<endl;  
         vector<int> * result = myRanker->search(s,searchResault);
         for(int  i  = 0 ; i<(int)result->size();i++){
            cout<< myindex->getFileNameFromID((*result)[i])<<endl;

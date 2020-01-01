@@ -2,7 +2,7 @@
 ## A File search engine build in C++
 ### Overview
     ------------------------------------------------------
-          Welcome in SVH181 search engine
+          Welcome to SVH181 search engine
 
 
     [1] :search     [2] :index      [3] :index a file       [4] :index a path               [0] :exit
@@ -10,6 +10,18 @@
 
     >>
 ### Example
+    >>1
+    -------search----------
+    elon musk
+    -----result------
+    search for elon musk
+    
+    ./dataset/Elon_Musk.txt
+    ./dataset/Tesla__Inc.txt
+    ./dataset/corpus/45567.txt
+    ./dataset/corpus/63590.txt
+    ./dataset/corpus/48489.txt
+    --Search time : 0 h 0 min 0 sec
 
 ## Usage
 

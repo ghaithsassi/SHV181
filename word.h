@@ -33,6 +33,7 @@ class word{
     void increaseOccurence();
     void pipeline();
     int getOccurence();
+    bool isStopword();
     
     friend ostream & operator<<(ostream &,word &);
     friend istream & operator>>(istream&, word &);

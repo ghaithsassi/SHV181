@@ -33,7 +33,8 @@ int n;// this variable is not used
 
 //notVerySmartRankingAlgorithm *algorithm = new notVerySmartRankingAlgorithm;
 //aLitleBitSmarterAlgorithm *algorithm = new aLitleBitSmarterAlgorithm;
-smarterAlgorithm * algorithm = new smarterAlgorithm;
+//smarterAlgorithm * algorithm = new smarterAlgorithm;
+evenMoreSmarterAlgorithm *algorithm = new evenMoreSmarterAlgorithm;
 
 indexing searchIndex(algorithm);
 
@@ -51,7 +52,7 @@ int main(){
     int q;
 
     outputStream<<"------------------------------------------------------"<<endl;
-    outputStream<<"      Welcome in SVH181 search engine                 "<<endl;
+    outputStream<<"      Welcome to SVH181 search engine                 "<<endl;
     start:
     outputStream<<""<<endl<<endl;
     outputStream<<"[1] :search\t[2] :index\t[3] :index a file\t[4] :index a path\t\t[0] :exit"<<endl;
@@ -111,8 +112,6 @@ void search(){
         string s;
         outputStream<<"-------search----------"<<endl;
         getline(inputStream,s);
-        cerr<<"aloha  "<<endl;
-        cerr<<s<<endl;
         time_t begin1=time(NULL);
         searchIndex.search(s);
         outputStream<<"--Search time : ";
