@@ -48,7 +48,7 @@ void word::pipeline(){
         /* remove any word under 2 charachers */ 
         if((int)name.size()<2)name = "";
         /* comment to deeactivate stop word removal */  
-        if(this->isStopword())name = "";
+        else if(this->isStopword())name = "";
 }
 void word::setWord(string s){
         name = s;
