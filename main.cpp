@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include<bits/stdc++.h>
 #include <time.h>
 #include "file.h"
-#include "indexing.h"
+#include "engine.h"
 #include "stream.h"
 #include "ranking.h"
 
@@ -36,10 +36,12 @@ int n;// this variable is not used
 //smarterAlgorithm * algorithm = new smarterAlgorithm;
 evenMoreSmarterAlgorithm *algorithm = new evenMoreSmarterAlgorithm;
 
-indexing searchIndex(algorithm);
+engine searchEngine(algorithm);
+
 
 input<istream> inputStream(cin);
 output<ostream> outputStream(cout);
+
 
 void duree(time_t,time_t);
 void search();
@@ -48,8 +50,15 @@ void indexafile();
 void indexapath();
 
 int main(){
-    text test_text("dataset/test.txt");  // used for debug
+    //text test_text("dataset/test.txt");  // used for debug
     int q;
+
+      outputStream<<"indexing dataset %%%%"<<endl;
+      time_t begin=time(NULL);
+      searchEngine.indexPath("./dataset");
+      cout<<"--Indexation time : ";
+      time_t end=time(NULL);
+      duree(begin,end);
 
     outputStream<<"------------------------------------------------------"<<endl;
     outputStream<<"      Welcome to SVH181 search engine                 "<<endl;
@@ -81,12 +90,12 @@ int main(){
         break;
     case 5:
         outputStream<<"loading index %%%?"<<endl;
-        searchIndex.loadIndex();
+        searchEngine.loadIndex();
         goto start;
         break;
     case 6:
         outputStream<<"saving index %%%?"<<endl;
-        searchIndex.saveIndex();
+        searchEngine.saveIndex();
         goto start;
         break;
 
@@ -108,37 +117,37 @@ void duree(time_t _begin, time_t _end)
   cout<<hours<<" h "<<min<<" min "<<sec<<" sec"<<endl; 
 }
 
-void search(){
+inline void search(){
         string s;
         outputStream<<"-------search----------"<<endl;
         getline(inputStream,s);
         time_t begin1=time(NULL);
-        searchIndex.search(s);
+        searchEngine.search(s);
         outputStream<<"--Search time : ";
         time_t end1=time(NULL); 
         duree(begin1,end1);
 }
-void index(){
+inline void index(){
       outputStream<<"indexing dataset %%%%"<<endl;
       time_t begin=time(NULL);
-      searchIndex.indexPath("./dataset");
+      searchEngine.indexPath("./dataset");
       cout<<"--Indexation time : ";
       time_t end=time(NULL);
       duree(begin,end);
 }
-void indexafile(){
+inline void indexafile(){
       string s="";
       outputStream<<"-------index a file----------"<<endl;
       outputStream<<"enter file path/name.txt: ";
       inputStream>>s;
       text myfile(s);
-      searchIndex.indexFile(myfile);
+      searchEngine.indexFile(myfile);
 
 }
-void indexapath(){
+inline void indexapath(){
       string s="";
       outputStream<<"-------index a path----------"<<endl;
       outputStream<<"enter path: ";
       inputStream>>s;
-      searchIndex.indexPath(s);
+      searchEngine.indexPath(s);
 }

@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bits/stdc++.h>
 using namespace std;
-
+/*
 class word{
     private:
     string name;
@@ -37,6 +37,52 @@ class word{
     
     friend ostream & operator<<(ostream &,word &);
     friend istream & operator>>(istream&, word &);
+};
+
+*/
+
+class word{
+    public:
+    string name;
+    
+    inline static string getWord(string &s){
+        return s;
+    }
+    inline static string pipeline(string &s){
+        transform(s.begin(), s.end(), s.begin(),[](unsigned char c){ return std::tolower(c); });
+        return s;
+    }
+    bool compare(word s){
+        return false;
+    }
+    bool compare(string s){
+        return (s==name);
+    }
+    inline static bool isOK(string &s){
+        return ( (int)s.size() > 2 );
+    }
+
+};
+
+class wordAttributes{
+    public:
+    int occurence = 1;
+    inline int getOccurence(){
+        return occurence;
+    }
+    inline void add(){
+        occurence++;
+    }
+    inline void setOccurence(int o){
+        this->occurence = o;
+    }
+    friend ostream & operator<<(ostream &out,wordAttributes &w){
+        out<<'\t'<<w.occurence;
+    }
+    friend istream & operator>>(istream &in, wordAttributes &w){
+        in>>w.occurence;
+    }
+
 };
 
 #endif

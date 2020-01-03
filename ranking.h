@@ -25,18 +25,18 @@ using namespace std;
 
 class rankingAlgorithm{
     public:
-    virtual vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault)=0;
+    virtual vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> >*searchResault)=0;
 };
 
 class notVerySmartRankingAlgorithm:public rankingAlgorithm{
     public:
-    vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
-        set<int> searchResaultFiles;
+    vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> > *searchResault){
+        set<string> searchResaultFiles;
         string words;
-        vector<int> *vec = new vector<int>;
+        vector<string> *vec = new vector<string>;
 
         for(auto it = searchResault->begin();it != searchResault->end();it++){
-            for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+            for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
                 //cerr<<*(it->second)<<" file:"<<myindex->getFileNameFromID(it->first)<<endl;
                 auto it2 = searchResaultFiles.find(jt->first);
                 if( it2==searchResaultFiles.end()) {
@@ -54,25 +54,29 @@ class notVerySmartRankingAlgorithm:public rankingAlgorithm{
 
     }
 };
+
+
 class aLitleBitSmarterAlgorithm:public rankingAlgorithm{
     public:
-        vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
+
+        
+        vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> > *searchResault){
         // map key : file id value : occurence     
-        map<int,int> searchResaultFiles;
+        map<string,int> searchResaultFiles;
         string words;
-        vector<pair<int,int>> vecIntermediate;
-        vector<int> *vec = new vector<int>;
+        vector<pair<int,string>> vecIntermediate;
+        vector<string> *vec = new vector<string>;
 
         // iterate through the words in the search sentence
         for(auto it = searchResault->begin();it != searchResault->end();it++){
             //iterate through the files
-            for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+            for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
                 auto it2 = searchResaultFiles.find(jt->first);
                 if( it2==searchResaultFiles.end()) {
-                                searchResaultFiles[jt->first]=jt->second->getOccurence();
+                                searchResaultFiles[jt->first]= (jt->second).getOccurence();
                                 //vec->push_back(jt->first);
                 }else{
-                                searchResaultFiles[jt->first]+=jt->second->getOccurence();
+                                searchResaultFiles[jt->first]+= (jt->second).getOccurence();
                 }                                       
             }
         }
@@ -96,23 +100,23 @@ class aLitleBitSmarterAlgorithm:public rankingAlgorithm{
 
 class smarterAlgorithm:public rankingAlgorithm{
     public:
-        vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
+        vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> > *searchResault){
         // map key : file id value : occurence     
-        map<int,int> searchResaultFiles;
+        map<string,int> searchResaultFiles;
         string words;
-        vector<pair<int,int>> vecIntermediate;
-        vector<int> *vec = new vector<int>;
+        vector<pair<int,string>> vecIntermediate;
+        vector<string> *vec = new vector<string>;
 
         // iterate through the words in the search sentence
         for(auto it = searchResault->begin();it != searchResault->end();it++){
             //iterate through the files
-            for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+            for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
                 auto it2 = searchResaultFiles.find(jt->first);
                 if( it2==searchResaultFiles.end()) {
-                                searchResaultFiles[jt->first]=jt->second->getOccurence();
+                                searchResaultFiles[jt->first]= (jt->second).getOccurence();
                                 //vec->push_back(jt->first);
                 }else{
-                                searchResaultFiles[jt->first]+=jt->second->getOccurence();
+                                searchResaultFiles[jt->first]+= (jt->second).getOccurence();
                 }                                       
             }
         }
@@ -136,20 +140,20 @@ class smarterAlgorithm:public rankingAlgorithm{
 
 class evenMoreSmarterAlgorithm:public rankingAlgorithm{
     public:
-        vector<int> * search(string ch, map< string, vector<pair<int,word*>> * > *searchResault){
+        vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> > *searchResault){
         // map key : file id value : occurence     
-        map<int,int> searchResaultFiles;
+        map<string,int> searchResaultFiles;
         string words;
-        vector<pair<int,int>> vecIntermediate;
-        vector<int> *vec = new vector<int>;
+        vector<pair<int,string>> vecIntermediate;
+        vector<string> *vec = new vector<string>;
 
         // iterate through the words in the search sentence
         for(auto it = searchResault->begin();it != searchResault->end();it++){
             if(it == searchResault->begin()){
 
                     //iterate through the files of first word
-                    for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
-                                            searchResaultFiles[jt->first]=jt->second->getOccurence();
+                    for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
+                                            searchResaultFiles[jt->first]=(jt->second).getOccurence();
                                   
                     }
 
@@ -157,10 +161,10 @@ class evenMoreSmarterAlgorithm:public rankingAlgorithm{
             else{
 
                     //iterate through the files
-                    for(auto jt = it->second->begin(); jt!=it->second->end();jt++){
+                    for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
                         auto it2 = searchResaultFiles.find(jt->first);
                         if( it2!=searchResaultFiles.end()) {
-                                        searchResaultFiles[jt->first]+=jt->second->getOccurence();
+                                        searchResaultFiles[jt->first]+= (jt->second).getOccurence();
 
                         }
                     }                                       

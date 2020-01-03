@@ -52,7 +52,7 @@ class tab_delimiter : public std::ctype<char>
 template <class T>
 class stream : public T
 {
-    protected:
+    public:
     T *myStream;
     public:
     stream(T &strm)
@@ -79,7 +79,7 @@ class input : public stream<T>
         (this->getStream())->imbue(x);
     }
     template <class type>
-    friend T &operator>>(input<T> &st, type &var)
+    inline friend T &operator>>(input<T> &st, type &var)
     {
         *(st.myStream) >> var;
         return *(st.myStream);
@@ -103,7 +103,7 @@ class output : public stream<T>
     public:
     output(T &strm) : stream<T>(strm) {}
     template <class type>
-    friend T &operator<<(output<T> &st, type &var)
+    inline friend T &operator<<(output<T> &st, type &var)
     {
         *(st.myStream) << var;
         return *(st.myStream);

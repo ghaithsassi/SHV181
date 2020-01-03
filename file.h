@@ -23,41 +23,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "word.h"
 using namespace std;
 
-template<class T>
-class file{   
+class file{
     protected:
     string fileName;
-    input<T> *myfile;
-    vector<word> worldList;
     public:
-    void setFilename(string filename){
+    inline void setFilename(string filename){
         this->fileName = filename;
     }
     file(string filename){
         setFilename(filename);
     }
-    void close(){
-        (*myfile).close();
-    }
-    string getFileName(){
+    virtual void close()=0;
+    inline string getFileName(){
         return fileName;
     }
-
     virtual void open()=0;
+    virtual bool getWord(string &)=0;
+    virtual vector<string> getContents()=0;
+
 };
-class text:public file<ifstream>{
+
+class text:public file{
     ifstream ifile;
     public:
-    text(string s):file<ifstream>(s){}
+    text(string s):file(s){}
     //text():file<ifstream>(""){}
-    void open(){
+    inline void open(){
         ifile.open(this->fileName);
-        this->myfile = new input<ifstream>(ifile);
-        myfile->addDelimiter();
+        locale x(locale::classic(), new my_ctype);
+        ifile.imbue(x);
+        //this->myfile = new input<ifstream>(ifile);
+        //myfile->addDelimiter();
     }
-    bool getWord(string &s){
-             if( *(this->myfile) >>s )return true;
+    inline bool getWord(string &s){
+             //if( *(this->myfile) >>s )return true;
+             if( ifile>>s )return true;
              else return false;
+    }
+    inline void close(){
+        ifile.close();
+    }
+    inline vector<string> getContents(){
+        vector<string> vec;
+        string s;
+        while(getWord(s)){
+            vec.push_back(s);
+        }
+        return vec;
     }
 
 };
