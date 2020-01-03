@@ -59,6 +59,8 @@ int main(){
       cout<<"--Indexation time : ";
       time_t end=time(NULL);
       duree(begin,end);
+    
+    cerr<<"here"<<endl;
 
     outputStream<<"------------------------------------------------------"<<endl;
     outputStream<<"      Welcome to SVH181 search engine                 "<<endl;

@@ -19,6 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENGINE_H
 
 #include<bits/stdc++.h>
+ #ifdef _OPENMP
+ # include <omp.h>
+ #endif
 #include <sys/types.h>
 #include <dirent.h>
 #include "database.h"
@@ -54,21 +57,31 @@ class engine{
     }
     /* end of constructors */
 
-
     inline void indexFile(file &fileToBeIndexed){
-        vector<pair<string,wordAttributes>> stat = analyze(fileToBeIndexed);
-        string f = fileToBeIndexed.getFileName();
-        int fileId = myindex->getfileId(f);
-        if(fileId != -1 ){
-            // update instead of push
-            return;
-        }else{
-            fileId  = myindex->pushfile(f);
-        }
-        int n =(int)stat.size();
-        for(int i = 0;i<n;i++){
-            myindex->push(stat[i].first,fileId,stat[i].second);
-        }
+            vector<pair<string,wordAttributes>> stat = this->analyze(fileToBeIndexed);
+            string f = fileToBeIndexed.getFileName();
+
+            /*
+            #pragma omp critical
+            cerr<<f<<endl;
+            */
+
+            int fileId = myindex->getfileId(f);
+            if(fileId != -1 ){
+                // update instead of push
+                return;
+            }else{
+                #pragma omp critical
+                fileId  = myindex->pushfile(f);
+                
+
+            }
+            int n =(int)stat.size();
+            #pragma omp critical
+            for(int i = 0;i<n;i++){
+                myindex->push(stat[i].first,fileId,stat[i].second);
+            }
+
         
     }
 
@@ -138,6 +151,7 @@ class engine{
 
     }
     void indexPath(string path){
+        vector<string> files;
         DIR* dirp = opendir(path.c_str());
         struct dirent * dp;
         int i(0);
@@ -152,8 +166,10 @@ class engine{
             file_path=path+"/"+dp->d_name;
             if(extension=="txt") {
                 //cout<<"File : "<<dp->d_name<<" is indexed"<<endl;
-                text txt(file_path);
-                this->indexFile(txt);
+                
+                //text txt(file_path);
+                //this->indexFile(txt);
+                files.push_back(file_path);
             }
             if (i!=1 && i!=2 && extension==""){
                 string dir;
@@ -163,6 +179,13 @@ class engine{
  
         }
         closedir(dirp);
+
+        int n =(int)files.size();
+        #pragma omp parallel for num_threads(1)
+        for(int i =0;i<n;i++){
+                text txt(files[i]);
+                this->indexFile(txt);
+            }
     }
     void saveIndex(){
         myindex->save();
