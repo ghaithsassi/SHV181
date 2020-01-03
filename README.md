@@ -44,11 +44,11 @@ you will need :
     g++ -c file.cpp 
     g++ -c database.cpp 
     g++ -c ranking.cpp
-    g++ -c engine.cpp
+    g++ -c engine.cpp -fopenmp
 #### Building main 
-    g++ -c main.cpp
+    g++ -c main.cpp -fopenmp
 #### Building exe file
-    g++ word.o stream.o file.o database.o ranking.o engine.o main.o -o f
+    g++ word.o stream.o file.o database.o ranking.o engine.o main.o -fopenmp -o f
 ## Documentation
 
 
