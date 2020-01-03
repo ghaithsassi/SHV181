@@ -181,7 +181,7 @@ class engine{
         closedir(dirp);
 
         int n =(int)files.size();
-        #pragma omp parallel for num_threads(1)
+        #pragma omp parallel for //num_threads(1)
         for(int i =0;i<n;i++){
                 text txt(files[i]);
                 this->indexFile(txt);

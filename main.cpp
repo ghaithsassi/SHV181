@@ -53,15 +53,6 @@ int main(){
     //text test_text("dataset/test.txt");  // used for debug
     int q;
 
-      outputStream<<"indexing dataset %%%%"<<endl;
-      time_t begin=time(NULL);
-      searchEngine.indexPath("./dataset");
-      cout<<"--Indexation time : ";
-      time_t end=time(NULL);
-      duree(begin,end);
-    
-    cerr<<"here"<<endl;
-
     outputStream<<"------------------------------------------------------"<<endl;
     outputStream<<"      Welcome to SVH181 search engine                 "<<endl;
     start:
@@ -79,7 +70,14 @@ int main(){
       goto start;
       break; // just to remove compiler warnning 
     case 2:
-      index();
+      {
+        outputStream<<"indexing dataset %%%%"<<endl;
+        time_t begin=time(NULL);
+        searchEngine.indexPath("./dataset");
+        cout<<"--Indexation time : ";
+        time_t end=time(NULL);
+        duree(begin,end);
+      }
       goto start;
       break;
     case 3:
