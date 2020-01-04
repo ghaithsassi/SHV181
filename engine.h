@@ -216,6 +216,10 @@ class engine{
         } 
         return ans;
     }
+    void printfileList(){
+        myindex->printFileList();
+    }
+    void printIndex(){}
 
 
 };

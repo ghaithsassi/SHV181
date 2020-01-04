@@ -58,6 +58,7 @@ class database{
     virtual void save(){}
     virtual void load(){} 
     virtual void print(){}
+    virtual void printFileList(){}
 };
 
 
@@ -334,19 +335,24 @@ class containerDataStructure:public database{
 
         while(mainIndex>>s){
             mainIndex>>n;
-            // must be checked here
-            SubContainer *subMap = new SubContainer;
-            index.insert(index.end(), make_pair(s,*subMap));
 
+            // must be rechecked here
+            SubContainer *subMap = new SubContainer;
             for(int i=0;i<n;i++){
                 wordAttributes *wordAtt = new wordAttributes;
                 mainIndex>>file_Id>>(*wordAtt);
                 subMap->insert(subMap->end(),make_pair(file_Id,*wordAtt)); 
             }
+            index.insert(index.end(), make_pair(s,*subMap));
         }
      
         fileIdFile.close();
         mainIndex.close();        
+    }
+    void printFileList(){
+        for(map<string,int>::iterator it = fileIdList.begin();it != fileIdList.end();it++){
+            cerr<<(it->first)<<endl;
+        }
     }
     
 };

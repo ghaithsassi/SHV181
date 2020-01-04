@@ -77,7 +77,7 @@ class wordAttributes{
         this->occurence = o;
     }
     friend ostream & operator<<(ostream &out,wordAttributes &w){
-        out<<'\t'<<w.occurence;
+        out<<w.occurence;
     }
     friend istream & operator>>(istream &in, wordAttributes &w){
         in>>w.occurence;
