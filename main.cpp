@@ -63,6 +63,7 @@ int main(){
     outputStream<<"[5] :load index\t[6] :save index"<<endl<<endl;
     outputStream<<">>";
     inputStream>>q;
+    searchEngine.loadIndex();
     switch (q)
     {
     case 0:
@@ -79,6 +80,7 @@ int main(){
         cout<<"--Indexation time : ";
         time_t end=time(NULL);
         duree(begin,end);
+        searchEngine.saveIndex();
       }
       goto start;
       break;
@@ -136,6 +138,7 @@ inline void index(){
       cout<<"--Indexation time : ";
       time_t end=time(NULL);
       duree(begin,end);
+      searchEngine.saveIndex();
 }
 inline void indexafile(){
       string s="";
