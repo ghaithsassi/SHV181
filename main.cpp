@@ -49,6 +49,8 @@ void index();
 void indexafile();
 void indexapath();
 
+
+//main
 int main(){
     //text test_text("dataset/test.txt");  // used for debug
     int q;
