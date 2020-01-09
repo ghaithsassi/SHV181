@@ -42,13 +42,13 @@ you will need :
     g++ -c word.cpp 
     g++ -c stream.cpp 
     g++ -c file.cpp 
-    g++ -c database.cpp 
+    g++ -c index.cpp 
     g++ -c ranking.cpp
     g++ -c engine.cpp -fopenmp
 #### Building main 
     g++ -c main.cpp -fopenmp
 #### Building exe file
-    g++ word.o stream.o file.o database.o ranking.o engine.o main.o -fopenmp -o f
+    g++ word.o stream.o file.o index.o ranking.o engine.o main.o -fopenmp -o f
 ## Documentation
 
 

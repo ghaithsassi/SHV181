@@ -15,15 +15,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DATABASE_H
-#define DATABASE_H
+#ifndef INDEX_H
+#define INDEX_H
 
 #include<bits/stdc++.h>
 #include "word.h"
 #include "stream.h"
 using namespace std;
 
-class database{
+class Index{
     public:
     map<string,int> fileIdList;  //change it to static
     map<int,string> fileIdListInverse; //change it to static
@@ -171,7 +171,7 @@ class mapBasedDataStructure:public database{
 
 
 template<typename Container,typename SubContainer>
-class containerDataStructure:public database{
+class containerDataStructure:public Index{
     public:
     Container index;
 
@@ -345,7 +345,6 @@ class containerDataStructure:public database{
             }
             index.insert(index.end(), make_pair(s,*subMap));
         }
-     
         fileIdFile.close();
         mainIndex.close();        
     }
@@ -358,9 +357,9 @@ class containerDataStructure:public database{
 };
 
 //add multimap
-typedef containerDataStructure<map<string,map<int,wordAttributes> >,map<int,wordAttributes> > map_map_DataStructure;
-typedef containerDataStructure<map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > map_vec_DataStructure;
-typedef containerDataStructure<unordered_map<int,map<int,wordAttributes> >,map<int,wordAttributes>> unorderedMap_map_DataStructure;
+typedef containerDataStructure<map<string,map<int,wordAttributes> >,map<int,wordAttributes> > map_map_index;
+typedef containerDataStructure<map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > map_vec_index;
+typedef containerDataStructure<unordered_map<int,map<int,wordAttributes> >,map<int,wordAttributes>> unorderedMap_map_index;
 
 
 #endif

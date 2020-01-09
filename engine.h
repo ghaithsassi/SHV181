@@ -24,47 +24,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  #endif
 #include <sys/types.h>
 #include <dirent.h>
-#include "database.h"
+#include "index.h"
 #include "file.h"
 #include "ranking.h"
+#include "analyzer.h"
 using namespace std;
 
 class engine{
     
-    database *myindex;
+    Index *myindex;
     rankingAlgorithm *myRanker ;
+    analyzer *myAnalyzer = new analyzer;
     public:
     /* constructors  */ 
     engine(){
-        myindex = new map_map_DataStructure;
+        myindex = new map_map_index;
         myRanker = new aLitleBitSmarterAlgorithm;
     } 
-    engine(database *db){
+    engine(Index *db){
         myindex = db;
         myRanker = new notVerySmartRankingAlgorithm;
     }
     engine(rankingAlgorithm *rA){
-        myindex = new map_vec_DataStructure;
+        myindex = new map_vec_index;
         myRanker = rA;
     }
-    engine(database *db,rankingAlgorithm *rA){
+    engine(Index *db,rankingAlgorithm *rA){
         myindex = db;
         myRanker = rA;
     }
-    engine(rankingAlgorithm *rA,database *db){
+    engine(rankingAlgorithm *rA,Index *db){
         myindex = db;
         myRanker =rA;
     }
     /* end of constructors */
 
     inline void indexFile(file &fileToBeIndexed){
-            vector<pair<string,wordAttributes>> stat = this->analyze(fileToBeIndexed);
+            vector<pair<string,wordAttributes>> stat = this->myAnalyzer->analyze(fileToBeIndexed);
             string f = fileToBeIndexed.getFileName();
-
-            /*
-            #pragma omp critical
-            cerr<<f<<endl;
-            */
 
             int fileId = myindex->getfileId(f);
             if(fileId != -1 ){
@@ -192,29 +189,6 @@ class engine{
     }
     void loadIndex(){
         myindex->load();
-    }
-    vector<pair<string,wordAttributes>> analyze(file &myfile){
-        myfile.open();
-        vector<string> vec = myfile.getContents();
-        map<string,int> occTemp;
-        
-        vector<pair<string,wordAttributes>> ans;
-
-        string s;
-        int n = (int)vec.size();
-        for(int i =0;i<n;i++){
-            s = word::pipeline(vec[i]);
-            if(word::isOK(s)){
-                occTemp[s] = occTemp[s]+1;
-            };
-        }
-        for(map<string,int>::iterator it = occTemp.begin();it != occTemp.end();it++){
-                wordAttributes att;
-                att.setOccurence(it->second);
-                ans.push_back(make_pair(it->first,att));
-
-        } 
-        return ans;
     }
     void printfileList(){
         myindex->printFileList();
