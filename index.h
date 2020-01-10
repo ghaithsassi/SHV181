@@ -24,10 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 class Index{
-    public:
+    protected:
     map<string,int> fileIdList;  //change it to static
     map<int,string> fileIdListInverse; //change it to static
-
+    public:
     int pushfile(string &f){
         int fileNbrs = (int)(this->fileIdList).size(); 
         fileIdList[f] = fileNbrs;
@@ -172,9 +172,9 @@ class mapBasedDataStructure:public database{
 
 template<typename Container,typename SubContainer>
 class containerDataStructure:public Index{
-    public:
+    
     Container index;
-
+    public:
     inline void push(string &w,int fileId,wordAttributes &att){
 
         typename Container::iterator it = find(index,w);
@@ -360,6 +360,6 @@ class containerDataStructure:public Index{
 typedef containerDataStructure<map<string,map<int,wordAttributes> >,map<int,wordAttributes> > map_map_index;
 typedef containerDataStructure<map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > map_vec_index;
 typedef containerDataStructure<unordered_map<int,map<int,wordAttributes> >,map<int,wordAttributes>> unorderedMap_map_index;
-
+typedef containerDataStructure<unordered_map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > unorderedmap_vec_index;
 
 #endif

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "engine.h"
 #include "stream.h"
 #include "ranking.h"
+#include "index.h"
 
 using namespace std;
 
@@ -34,9 +35,15 @@ int n;// this variable is not used
 //notVerySmartRankingAlgorithm *algorithm = new notVerySmartRankingAlgorithm;
 //aLitleBitSmarterAlgorithm *algorithm = new aLitleBitSmarterAlgorithm;
 //smarterAlgorithm * algorithm = new smarterAlgorithm;
-evenMoreSmarterAlgorithm *algorithm = new evenMoreSmarterAlgorithm;
+//evenMoreSmarterAlgorithm *algorithm = new evenMoreSmarterAlgorithm;
+intelligenceAlgorithm * algorithm = new intelligenceAlgorithm;
 
-engine searchEngine(algorithm);
+//map_vec_index *myindex = new map_vec_index;
+map_map_index *myindex = new map_map_index;
+//unorderedMap_map_index *myindex = new unorderedMap_map_index;
+//unorderedmap_vec_index *myindex = new unorderedmap_vec_index;
+
+engine searchEngine(myindex,algorithm);
 
 
 input<istream> inputStream(cin);
@@ -55,6 +62,8 @@ int main(){
     //text test_text("dataset/test.txt");  // used for debug
     int q;
 
+    searchEngine.loadIndex(); // auto load
+
     outputStream<<"------------------------------------------------------"<<endl;
     outputStream<<"      Welcome to SVH181 search engine                 "<<endl;
     start:
@@ -63,7 +72,7 @@ int main(){
     outputStream<<"[5] :load index\t[6] :save index"<<endl<<endl;
     outputStream<<">>";
     inputStream>>q;
-    searchEngine.loadIndex();
+    
     switch (q)
     {
     case 0:

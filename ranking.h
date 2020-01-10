@@ -130,7 +130,7 @@ class smarterAlgorithm:public rankingAlgorithm{
         sort(vecIntermediate.begin(),vecIntermediate.end());
         int n = (int)vecIntermediate.size();
         for(int i = n-1;i>=max(0,n-5);i--){
-            vec->push_back(vecIntermediate[i].second);
+            vec->push_back(vecIntermediate[i].second+ " " + to_string(vecIntermediate[i].first));
         }
         /* return result */
         return vec;
@@ -150,7 +150,6 @@ class evenMoreSmarterAlgorithm:public rankingAlgorithm{
         // iterate through the words in the search sentence
         for(auto it = searchResault->begin();it != searchResault->end();it++){
             if(it == searchResault->begin()){
-
                     //iterate through the files of first word
                     for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
                                             searchResaultFiles[jt->first]=(jt->second).getOccurence();
@@ -184,6 +183,63 @@ class evenMoreSmarterAlgorithm:public rankingAlgorithm{
         int n = (int)vecIntermediate.size();
         for(int i = n-1;i>=max(0,n-5);i--){
             vec->push_back(vecIntermediate[i].second);
+        }
+        /* return result */
+        return vec;
+
+    }
+};
+
+class intelligenceAlgorithm:public rankingAlgorithm{
+    static bool compareWordCount(tuple<string,int,int> T1,tuple<string,int,int> T2){
+        return (get<1>(T1)) < (get<1>(T2));
+    }
+    static bool compareWordOcc(tuple<string,int,int> T1,tuple<string,int,int> T2){
+        return (get<2>(T1)) < (get<2>(T2));
+    }
+    public:
+        vector<string> * search(string ch, map< string, vector<pair<string,wordAttributes>> > *searchResault){
+        // map key : file id value : pair< nbre of words , occurence>     
+        map<string,pair<int,int>> searchResaultFiles;
+        string words;
+        vector<tuple<string,int,int>> vecIntermediate;
+        vector<string> *vec = new vector<string>;
+
+        // iterate through the words in the search sentence
+        for(auto it = searchResault->begin();it != searchResault->end();it++){
+                    //iterate through the files
+                    for(auto jt = (it->second).begin(); jt!=(it->second).end();jt++){
+                        auto it2 = searchResaultFiles.find(jt->first);
+                        if( it2!=searchResaultFiles.end()) {
+                                        searchResaultFiles[jt->first].first++;
+                                        searchResaultFiles[jt->first].second+=(jt->second).getOccurence();
+                        }else{
+                            pair<int,int> p;
+                            p.first = 1;
+                            p.second = (jt->second).getOccurence();
+                            searchResaultFiles[jt->first] = p;
+                        }
+                    }                                       
+
+
+        }
+
+        
+        /* sort files here */
+        // copy the result a vector
+        for(auto it= searchResaultFiles.begin();it!=searchResaultFiles.end();it++){
+            // push the pair < occurence   , file > in the vector
+            vecIntermediate.push_back(make_tuple(it->first,(it->second).first,(it->second).second));
+        }
+
+
+        // sort 
+        sort(vecIntermediate.begin(),vecIntermediate.end(),compareWordOcc);
+        sort(vecIntermediate.begin(),vecIntermediate.end(),compareWordCount);
+
+        int n = (int)vecIntermediate.size();
+        for(int i = n-1;i>=max(0,n-5);i--){
+            vec->push_back( (get<0>(vecIntermediate[i])) +" "+ to_string( get<2>(vecIntermediate[i]) ) );
         }
         /* return result */
         return vec;

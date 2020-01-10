@@ -23,9 +23,6 @@
     ./dataset/corpus/48489.txt
     --Search time : 0 h 0 min 0 sec
 
-## Usage
-
-
 
 ## Building and Installing
 
@@ -34,10 +31,22 @@
 
 you will need :
 * C++ complier >= c++17
+* openMP library
 
 #### using terminal 
     git colne https://github.com/ghaithsassi/SHV181.git
     cd SHV181
+#### windows
+to install run
+
+    install.bat
+
+to run 
+
+    f.exe
+
+#### linux
+
 #### Building classes
     g++ -c word.cpp 
     g++ -c stream.cpp 
@@ -49,7 +58,17 @@ you will need :
     g++ -c main.cpp -fopenmp
 #### Building exe file
     g++ word.o stream.o file.o index.o ranking.o engine.o main.o -fopenmp -o f
+
+## Usage
+* Add files to be indexed in dataset folder
+* Before start seaching make sure that  you indexed the files and loaded the index
+* The index is saved under index folder
 ## Documentation
+
+#### Class Diagram
+![](uml.png)
+
+
 
 
 ## Contributing

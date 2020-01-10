@@ -9,3 +9,5 @@ test.cpp
 
 !index/.gitkeep
 !dataset/.gitkeep 
+!index/fileid
+!index/mainIndex
