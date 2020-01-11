@@ -3,9 +3,15 @@
 
 #include<bits/stdc++.h>
 #include "file.h"
+#include "word.h"
 using namespace std;
 
 class analyzer{
+    public:
+    virtual vector<pair<string,wordAttributes>> analyze(file &myfile)=0;
+};
+
+class analyzerOccurence:public analyzer{
     public:
     vector<pair<string,wordAttributes>> analyze(file &myfile){
         myfile.open();
@@ -23,13 +29,13 @@ class analyzer{
             };
         }
         for(map<string,int>::iterator it = occTemp.begin();it != occTemp.end();it++){
-                wordAttributes att;
-                att.setOccurence(it->second);
-                ans.push_back(make_pair(it->first,att));
+                wordAttributes *att =new occurence(it->second);
+                ans.push_back(make_pair(it->first,*att));
 
         } 
         return ans;
     }
+
 };
 
 

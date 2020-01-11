@@ -40,7 +40,6 @@ intelligenceAlgorithm * algorithm = new intelligenceAlgorithm;
 
 //map_vec_index *myindex = new map_vec_index;
 map_map_index *myindex = new map_map_index;
-//unorderedMap_map_index *myindex = new unorderedMap_map_index;
 //unorderedmap_vec_index *myindex = new unorderedmap_vec_index;
 
 engine searchEngine(myindex,algorithm);
@@ -62,7 +61,7 @@ int main(){
     //text test_text("dataset/test.txt");  // used for debug
     int q;
 
-    searchEngine.loadIndex(); // auto load
+    //searchEngine.loadIndex(); // auto load
 
     outputStream<<"------------------------------------------------------"<<endl;
     outputStream<<"      Welcome to SVH181 search engine                 "<<endl;

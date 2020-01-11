@@ -20,26 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <bits/stdc++.h>
 using namespace std;
-/*
-class word{
-    private:
-    string name;
-    int occurence = 0;
-    public:
-    word();
-    word(string);
-    void setWord(string);
-    string getWord();
-    void increaseOccurence();
-    void pipeline();
-    int getOccurence();
-    bool isStopword();
-    
-    friend ostream & operator<<(ostream &,word &);
-    friend istream & operator>>(istream&, word &);
-};
-
-*/
 
 class word{
     public:
@@ -64,25 +44,168 @@ class word{
 
 };
 
-class wordAttributes{
+class score{
+    int datatype; // 0 int 1 float
+    union value{
+        int n;
+        float f;
+        value(){}
+        ~value(){};
+    } value;
     public:
-    int occurence = 1;
-    inline int getOccurence(){
-        return occurence;
+    score(){}
+    score(int v){
+        value.n = v;
+        datatype = 0;
     }
-    inline void add(){
-        occurence++;
+    score(float v){
+        value.f = v;
+        datatype = 0;
     }
-    inline void setOccurence(int o){
-        this->occurence = o;
+    friend ostream & operator<<(ostream &out,score &s){
+        switch (s.datatype)
+        {
+        case 0:
+            return out<<s.value.n;
+        case 1:
+            return out<<s.value.n;
+        default:
+            break;
+        }
     }
-    friend ostream & operator<<(ostream &out,wordAttributes &w){
-        out<<w.occurence;
+    friend istream & operator>>(istream &in,score &s){
+        switch (s.datatype)
+        {
+        case 0:
+            int n;
+            in>>n;
+            s.value.n = n;
+            return in;
+        case 1:
+            float f;
+            in>>f;
+            s.value.f = n;
+            return in;
+        default:
+            return in;;
+        }
     }
-    friend istream & operator>>(istream &in, wordAttributes &w){
-        in>>w.occurence;
+    bool operator<(score &other){
+        if((datatype==other.datatype)){
+            if(datatype == 0)return value.n < other.value.n;
+            else if(datatype == 1) return value.f < other.value.f;
+           
+        }
+    }
+    bool operator<(int v){
+        return value.n < v;
+    }
+    bool operator<(float v){
+        return value.f < v;
+    }
+    score operator=(score other){
+        datatype = other.datatype;
+        value = other.value;
+        return other;
+    }
+    score operator=(int v){
+        datatype =0;
+        value.n = v;
+        return *this;
+    }
+    score operator=(float v){
+        datatype =1;
+        value.f = v;
+        return *this;
+    }
+    score operator+=(int v){
+        if(datatype == 0)value.n+=v;
+        else if(datatype == 1)value.f+=v;
+        return *this;
+    }
+    score operator+=(float v){
+        if(datatype == 1)value.f+=v;
+        return *this;
+    }
+    score operator+=(score &other){
+        if(datatype == 0)value.n +=other.value.n;
+        else if(datatype==1)value.f += other.value.f;
+        return *this;
+    }
+    score operator+=(score other){
+        if(datatype == 0)value.n +=other.value.n;
+        else if(datatype==1)value.f += other.value.f;
+        return *this;
+    }
+    score operator++(int){
+        if(datatype == 0)value.n++;
+        else if(datatype == 0)value.f++;
+        return *this;
+    }
+    friend string to_string(score &s){
+        if(s.datatype ==0) return to_string(s.value.n);
+        else if(s.datatype == 0) return to_string(s.value.f);
+        return "";
     }
 
 };
+
+class wordAttributes{
+    protected:
+    score myscore;
+    public:
+    void setScore(score s){
+        myscore = s;
+    }
+    score getScore(){
+        return myscore;
+    }
+    friend ostream & operator<<(ostream &out,wordAttributes &w){
+        return out<<w.myscore;
+    }
+    //virtual ~wordAttributes()=0;
+    friend istream & operator>>(istream &in, wordAttributes &w){
+        return in>>w.myscore;
+    }
+    bool operator<(wordAttributes w){
+        return (myscore< w.myscore); 
+    }
+    wordAttributes operator+=(wordAttributes other){
+        myscore+=(other.getScore());
+    }
+    wordAttributes operator=(wordAttributes other){
+        myscore=(other.getScore());
+    }
+    friend string to_string(wordAttributes w){
+        return to_string(w.myscore);
+    }
+};
+
+class occurence: public wordAttributes{
+    //score template
+    public:
+    occurence(){
+        myscore = 1;
+    }
+    occurence(int o){
+        myscore =o;
+    }
+    void setScore(int o){
+        myscore = o;
+    }
+
+    friend istream & operator>>(istream &in, occurence &w){
+        int temp;
+        in>>temp;
+        w.myscore = temp;
+    }
+    bool operator<(int v){
+        return (myscore < v); 
+    }
+    int operator++(int){
+        myscore++;
+    }
+};
+
 
 #endif

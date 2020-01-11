@@ -49,12 +49,12 @@ class Index{
         }
         
     }
-    virtual void push(string &,string &){}
-    virtual void push(string &,int){}
-    virtual void push(string &,string &,wordAttributes &){}
 
-    virtual vector<pair<string,wordAttributes>> searchWord(string &){}
+    virtual void push(string &,string &,wordAttributes &){}
     virtual inline void push(string &w,int fileId,wordAttributes &att){}
+    
+    virtual vector<pair<string,wordAttributes>> searchWord(string &){}
+
     virtual void save(){}
     virtual void load(){} 
     virtual void print(){}
@@ -62,112 +62,6 @@ class Index{
 };
 
 
-/*
-class mapBasedDataStructure:public database{
-    public:
-    map <string,map<int,word*>*> index;
-    void push(string &w,string &f){
-            int fileId = this->getfileId(f);
-            if(fileId ==-1 ){
-                fileId = this->pushfile(f);
-            }
-
-            word *myword =this->analayzer(w);
-            string s = myword->getWord();
-            if(s==""){
-                delete myword;
-                return;
-            }; 
-
-            auto it = index.find(s);
-            if( it != index.end()){
-                map<int,word*> &filesContainsWord = *(index[s]);
-                auto fl = filesContainsWord.find(fileId);
-                if(fl != filesContainsWord.end()){
-                    filesContainsWord[fileId]->increaseOccurence();
-                }else{
-                    myword->increaseOccurence();
-                    filesContainsWord[fileId] = myword;
-                }
-            }else{
-                myword->increaseOccurence();
-                map<int,word*> *filesContainsWord = new map<int,word*>({{fileId,myword}});
-                index[s] = filesContainsWord;
-            }
-
-    }
-    vector<pair<int,word*>> *searchWord(string &w){
-        vector<pair<int,word*>> * filevector = new vector<pair<int,word*>>;
-        auto it = index.find(w);
-        if(it != index.end()){
-                for(auto it = index[w]->begin();it != index[w]->end();it++){
-                    filevector->push_back(make_pair(it->first,it->second));
-                }
-        }
-        return filevector;
-    }
-    void save(){
-        ofstream oIndFile,oFilesMapedToWordFile,oWorldlist,ofileIdFile;
-        oIndFile.open("index/mainIndex");
-        ofileIdFile.open("index/fileId");
-
-        output<ofstream> mainIndex(oIndFile);
-        output<ofstream> fileIdFile(ofileIdFile);
-
-        // save data to files
-        for(auto it = index.begin();it!=index.end();it++){
-            int n =(int) it->second->size();
-            mainIndex<<it->first<<'\t'<<n<<'\t';
-            for(auto jt = it->second->begin();jt!=it->second->end();jt++){
-                mainIndex<<jt->first<<'\t'<<*(jt->second)<<'\t';
-            }
-            mainIndex<<""<<endl;
-        }
-        //save file id
-        for(auto it = fileIdList.begin();it!=fileIdList.end();it++){
-            fileIdFile<<it->first<<'\t'<<it->second<<endl;
-        } 
-
-        fileIdFile.close();
-        mainIndex.close();
-    }
-    void load(){
-        ifstream iIndFile,ifileIdFile;
-        
-        iIndFile.open("index/mainIndex");
-        ifileIdFile.open("index/fileId");
-
-        input<ifstream> mainIndex(iIndFile);
-        mainIndex.addTabDelimiter();
-        input<ifstream> fileIdFile(ifileIdFile);
-        fileIdFile.addTabDelimiter();
-
-        string s;
-        int file_Id,n;
-        
-        while(fileIdFile>>s>>file_Id){
-            fileIdList[s]=file_Id;
-            fileIdListInverse[file_Id] = s;
-        }
-
-        while(mainIndex>>s){
-            mainIndex>>n;
-            map<int,word*>* subMap = new map<int,word*>;
-            index[s] = subMap;
-            for(int i=0;i<n;i++){
-                word *myword = new word;
-                mainIndex>>file_Id>>*myword;
-                myword->setWord(s);
-                (*subMap)[file_Id]=myword; 
-            }
-        }
-     
-        fileIdFile.close();
-        mainIndex.close();        
-    }
-    
-};
-*/
 
 
 template<typename Container,typename SubContainer>
@@ -217,39 +111,7 @@ class containerDataStructure:public Index{
 
     }
 
-    //here we increase the occurence
-    inline void push(string &w,int fileId){
 
-        w=word::pipeline(w);
-        // don't add the word if it's not ok
-        if(!(word::isOK(w)))return;
-
-
-        typename Container::iterator it = find(index,w);
-        if( it != index.end()){
-            typename SubContainer::iterator fileVar = find((it->second),fileId);
-            if(fileVar != (it->second).end()){
-                //update
-                (fileVar->second).add();
-            }else{
-                wordAttributes *att = new wordAttributes;
-                (it->second).insert((it->second).end(),make_pair(fileId,*att));
-            }
-        }else{
-            SubContainer *filesContainsWord = new SubContainer;
-            wordAttributes *att = new wordAttributes;
-            filesContainsWord->insert(filesContainsWord->end(),make_pair(fileId,*att));
-            index.insert(index.end(),make_pair(w,*filesContainsWord));
-        }
-
-    }
-    inline void push(string &w,string &f){
-        int fileId = this->getfileId(f);
-        if(fileId ==-1 ){
-            fileId = this->pushfile(f);
-        }
-        push(w,fileId);
-    }
 
     //spectial functions used to sreach in container
     // try to change the variables' names
@@ -359,7 +221,6 @@ class containerDataStructure:public Index{
 //add multimap
 typedef containerDataStructure<map<string,map<int,wordAttributes> >,map<int,wordAttributes> > map_map_index;
 typedef containerDataStructure<map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > map_vec_index;
-typedef containerDataStructure<unordered_map<int,map<int,wordAttributes> >,map<int,wordAttributes>> unorderedMap_map_index;
 typedef containerDataStructure<unordered_map<string,vector<pair<int,wordAttributes>> >,vector<pair<int,wordAttributes>> > unorderedmap_vec_index;
 
 #endif

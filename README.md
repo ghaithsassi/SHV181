@@ -46,6 +46,9 @@ to run
     f.exe
 
 #### linux
+to install on linux:
+
+    ./install.sh
 
 #### Building classes
     g++ -c word.cpp 

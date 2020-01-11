@@ -34,7 +34,7 @@ class engine{
     
     Index *myindex;
     rankingAlgorithm *myRanker ;
-    analyzer *myAnalyzer = new analyzer;
+    analyzer *myAnalyzer = new analyzerOccurence;
     public:
     /* constructors  */ 
     engine(){
@@ -128,7 +128,7 @@ class engine{
         /* result */
         cout<<"-----result------"<<endl;
         cout<<"search for "<<s<<endl<<endl;  
-        vector<string> * result = myRanker->search(s,searchResault);
+        vector<string> * result = myRanker->sortfiles(s,searchResault);
         for(auto  i  = result->begin() ; i!=result->end();i++){
            cout<<(*i)<<endl;
        }
